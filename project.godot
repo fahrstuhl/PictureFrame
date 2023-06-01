@@ -12,6 +12,7 @@ config_version=4
 
 config/name="Picture Frame"
 run/main_scene="res://PictureFrame.tscn"
+run/low_processor_mode=true
 config/icon="res://icon.png"
 
 [gui]
