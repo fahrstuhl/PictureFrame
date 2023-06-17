@@ -104,7 +104,7 @@ margin_top = 224.0
 margin_right = 907.0
 margin_bottom = 332.0
 NAME = "Image Fill"
-OPTIONS = [ "Zoom to Fill", "Black Bars", "Blur" ]
+OPTIONS = [ "Zoom to Fill", "Black Bars" ]
 
 [connection signal="gui_input" from="." to="." method="_on_PictureFrame_gui_input"]
 [connection signal="timeout" from="content/timer" to="." method="_on_Timer_timeout"]
