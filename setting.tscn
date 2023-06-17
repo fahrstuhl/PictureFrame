@@ -14,39 +14,38 @@ OPTIONS = [ "Test" ]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1017.0
-margin_bottom = 109.0
+margin_bottom = 101.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 
 [node name="hbox" type="HBoxContainer" parent="vbox"]
 margin_right = 1010.0
-margin_bottom = 53.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 
 [node name="name" type="Label" parent="vbox/hbox"]
 unique_name_in_owner = true
-margin_top = 4.0
-margin_right = 930.0
-margin_bottom = 49.0
+margin_right = 1010.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 4.0
 text = "Setting"
 
 [node name="check" type="CheckButton" parent="vbox/hbox"]
 unique_name_in_owner = true
+visible = false
 margin_left = 934.0
 margin_right = 1010.0
 margin_bottom = 53.0
 
 [node name="value" type="Label" parent="vbox"]
 unique_name_in_owner = true
-margin_top = 57.0
+margin_top = 49.0
 margin_right = 1010.0
-margin_bottom = 102.0
+margin_bottom = 94.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
-text = "REPLACEME"
 align = 1
 
 [node name="dialog" type="FileDialog" parent="vbox"]
@@ -67,12 +66,13 @@ access = 2
 unique_name_in_owner = true
 margin_right = 20.0
 margin_bottom = 20.0
+items = [ "Test", null, 0, false, false, 0, 0, null, "", false ]
 
 [node name="Button" type="Button" parent="."]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1017.0
-margin_bottom = 109.0
+margin_bottom = 101.0
 size_flags_horizontal = 9
 flat = true
 

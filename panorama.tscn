@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://private/panorama_360.jpeg" type="Texture" id=1]
+[ext_resource path="res://private/panorama_snow.jpeg" type="Texture" id=1]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 1 )
@@ -12,7 +12,6 @@ background_sky = SubResource( 1 )
 [node name="panorama" type="Spatial"]
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
 current = true
 fov = 75.0
 size = 0.125

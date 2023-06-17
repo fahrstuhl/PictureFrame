@@ -2,6 +2,7 @@ extends Control
 
 export var PATH: String setget set_image_path
 enum ImageFillModes {ZOOM, BARS, BLUR}
+enum ImageType {FLAT, PANORAMA, VR180}
 export(ImageFillModes) var IMAGE_FILL: int setget set_image_fill
 var CONFIG : ConfigFile
 var CONFIG_PATH = "user://config.ini"
@@ -11,11 +12,26 @@ var c_texture: Texture
 var image: Image
 var is_dragging := false
 var is_default_path : bool
+var WAIT_TIME_INDEX: int = 3 # 10s
+var selectable_wait_times = [
+	1, 2, 5, 10, 20, 30, 45, 60,
+	1.5*60, 2*60, 2.5*60, 3*60, 4*60, 5*60,
+	10*60, 15*60, 20*60, 30*60, 45*60, 1*3600,
+	1.5*3600, 2*3600, 2.5*3600, 3*3600, 4*3600, 5*3600,
+	6*3600, 12*3600, 24*3600
+]
 
 func _ready():
+	fill_wait_time_options()
 	get_tree().get_root().connect("size_changed", self, "_on_window_size_changed")
 	disable_content_inputs()
 	load_config()
+
+func fill_wait_time_options():
+	var fuzzy_times = []
+	for time in selectable_wait_times:
+		fuzzy_times.append(fuzzy_time_format(time))
+	$"%wait_time".OPTIONS = fuzzy_times
 
 func disable_content_inputs():
 	$content.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -56,6 +72,7 @@ func load_config():
 		$"%settings".hide()
 	set_image_path(CONFIG.get_value("DEFAULT", "image_path", OS.get_user_data_dir()))
 	set_image_fill(CONFIG.get_value("DEFAULT", "image_fill", 0))
+	set_wait_time(CONFIG.get_value("DEFAULT", "wait_time_index", 3))
 
 func set_image_path(value):
 	debug_print("Setting path to {0}".format([value]))
@@ -72,6 +89,15 @@ func set_image_fill(index):
 		ImageFillModes.BLUR: pass
 	$"%image_fill".OPTION = IMAGE_FILL
 	set_setting("image_fill", IMAGE_FILL)
+
+func set_wait_time(index):
+	WAIT_TIME_INDEX = index
+	var wait_time = selectable_wait_times[WAIT_TIME_INDEX]
+	print("Setting wait time to {0}".format([fuzzy_time_format(wait_time)]))
+	$"%timer".wait_time = wait_time
+	$"%timer".start()
+	$"%wait_time".OPTION = WAIT_TIME_INDEX
+	set_setting("wait_time_index", WAIT_TIME_INDEX)
 
 func set_setting(key: String, value):
 	CONFIG.set_value("DEFAULT", key, value)
@@ -92,18 +118,56 @@ func next_picture():
 	c_texture.create_from_image(image)
 	var c_name : String = IMAGES[current]
 	debug_print("Current image {0} with index {1}".format([c_name, current]))
-	if c_name.get_file().begins_with("panorama"):
-		$"%panorama/panorama/WorldEnvironment".environment.background_sky.panorama = c_texture
-		$"%image".hide()
-		$"%video".hide()
-		$"%panorama".show()
-	else:
-		$"%image/image".texture = c_texture
-		$"%video".hide()
-		$"%panorama".hide()
-		$"%image".show()
+	var image_type = get_image_type(c_name)
+	match image_type:
+		ImageType.PANORAMA:
+			$"%panorama/panorama/WorldEnvironment".environment.background_sky.panorama = c_texture
+			$"%image".hide()
+			$"%panorama/panorama/Camera".rotation_degrees.y = 0
+			$"%panorama".show()
+		ImageType.FLAT:
+			$"%image/image".texture = c_texture
+			$"%panorama".hide()
+			$"%image".show()
+		ImageType.VR180:
+			$"%panorama/panorama/WorldEnvironment".environment.background_sky.panorama = c_texture
+			$"%image".hide()
+			$"%panorama".show()
+			$"%panorama/panorama/Camera".rotation_degrees.y = 90
 	current = (current + 1)%len(IMAGES)
 	image.load(IMAGES[current])
+
+func get_image_type(n: String):
+	n = n.trim_prefix(PATH)
+	var img_name = n.get_file()
+	var top_dir = n.get_base_dir().get_slice("/", 1)
+	var panorama_checks = ["panorama", "vr360"]
+	var vr180_checks = ["vr180"]
+	if begins_with_list(img_name, panorama_checks) or begins_with_list(top_dir, panorama_checks):
+		return ImageType.PANORAMA
+	if begins_with_list(img_name, vr180_checks) or begins_with_list(top_dir, vr180_checks):
+		return ImageType.VR180
+	return ImageType.FLAT
+
+static func begins_with_list(string, list):
+	for to_test in list:
+		if string.to_lower().begins_with(to_test):
+			return true
+	return false
+
+static func fuzzy_time_format(time: int):
+	var seconds = (time%60)
+	var minutes = (time%3600)/60
+	var hours = time/3600
+	if time < 60:
+		return "{0}s".format([seconds])
+	if time < 600 and seconds != 0:
+		return "{0}m {1}s".format([minutes, seconds])
+	if time < 3600:
+		return "{0}m".format([minutes])
+	if time < 10800 and minutes !=0:
+		return "{0}h {1}m".format([hours, minutes])
+	return "{0}h".format([hours])
 
 static func find_files_with_extensions(path, extensions):
 	var dir = Directory.new()
@@ -164,3 +228,6 @@ func debug_print(text):
 
 func _on_image_fill_setting_changed(value):
 	set_image_fill(value)
+
+func _on_wait_time_setting_changed(value):
+	set_wait_time(value)

@@ -50,13 +50,8 @@ stretch = true
 
 [node name="panorama" parent="content/panorama" instance=ExtResource( 2 )]
 
-[node name="video" type="VideoPlayer" parent="content"]
+[node name="timer" type="Timer" parent="content"]
 unique_name_in_owner = true
-visible = false
-margin_right = 1024.0
-margin_bottom = 600.0
-
-[node name="Timer" type="Timer" parent="content"]
 wait_time = 5.0
 autostart = true
 
@@ -70,42 +65,49 @@ text = "debug"
 
 [node name="settings" type="PanelContainer" parent="."]
 unique_name_in_owner = true
-anchor_left = 0.2
-anchor_top = 0.1
-anchor_right = 0.8
-anchor_bottom = 0.9
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="container" type="VBoxContainer" parent="settings"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 607.4
-margin_bottom = 473.0
+margin_right = 914.6
+margin_bottom = 533.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="wait_time" parent="settings/container" instance=ExtResource( 4 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+margin_right = 907.0
+margin_bottom = 108.0
+NAME = "Time Between Images"
+OPTIONS = [ "" ]
 
 [node name="image_path" parent="settings/container" instance=ExtResource( 4 )]
 unique_name_in_owner = true
 anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 600.0
-margin_bottom = 65.0
+margin_top = 112.0
+margin_right = 907.0
+margin_bottom = 220.0
 NAME = "Current Image Path"
 TYPE = 2
 
 [node name="image_fill" parent="settings/container" instance=ExtResource( 4 )]
 unique_name_in_owner = true
 anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 69.0
-margin_right = 600.0
-margin_bottom = 134.0
+margin_top = 224.0
+margin_right = 907.0
+margin_bottom = 332.0
 NAME = "Image Fill"
-TYPE = 1
 OPTIONS = [ "Zoom to Fill", "Black Bars", "Blur" ]
 
 [connection signal="gui_input" from="." to="." method="_on_PictureFrame_gui_input"]
-[connection signal="timeout" from="content/Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="content/timer" to="." method="_on_Timer_timeout"]
+[connection signal="setting_changed" from="settings/container/wait_time" to="." method="_on_wait_time_setting_changed"]
 [connection signal="setting_changed" from="settings/container/image_path" to="." method="_on_image_path_dir_selected"]
 [connection signal="setting_changed" from="settings/container/image_fill" to="." method="_on_image_fill_setting_changed"]

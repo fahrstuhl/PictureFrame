@@ -7,10 +7,12 @@ enum SettingType {BOOL, MENU, FILE}
 
 export(String) var NAME = "Setting"
 export(SettingType) var TYPE = SettingType.BOOL
-export(Array, String) var OPTIONS
+export(Array, String) var OPTIONS setget set_OPTIONS
 export(bool) var BOOL = false setget set_BOOL
 export(String) var PATH = "" setget set_PATH
 export(int) var OPTION = 0 setget set_OPTION
+
+var menu_ready := false
 
 func _ready():
 	$"%name".text = NAME
@@ -34,12 +36,25 @@ func set_BOOL(value):
 func setup_menu():
 	$"%value".show()
 	$"%check".hide()
+	set_OPTIONS(OPTIONS)
+
+func set_OPTIONS(value):
+	OPTIONS = value
+	if not is_inside_tree():
+		yield(self, "tree_entered")
+	set_menu_options()
+	set_OPTION(OPTION)
+
+func set_menu_options():
+	for i in range($"%menu".get_item_count()):
+		$"%menu".remove_item(0)
 	for item in OPTIONS:
 		$"%menu".add_item(item)
-	set_OPTION(OPTION)
 
 func set_OPTION(value):
 	OPTION = value
+	if not is_inside_tree():
+		yield(self, "tree_entered")
 	$"%value".text = OPTIONS[OPTION]
 
 func setup_file():
