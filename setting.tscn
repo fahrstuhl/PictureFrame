@@ -1,0 +1,81 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://setting.gd" type="Script" id=1]
+
+[node name="setting" type="PanelContainer"]
+anchor_right = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 9
+script = ExtResource( 1 )
+TYPE = 1
+OPTIONS = [ "Test" ]
+
+[node name="vbox" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 109.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+
+[node name="hbox" type="HBoxContainer" parent="vbox"]
+margin_right = 1010.0
+margin_bottom = 53.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+
+[node name="name" type="Label" parent="vbox/hbox"]
+unique_name_in_owner = true
+margin_top = 4.0
+margin_right = 930.0
+margin_bottom = 49.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.0
+text = "Setting"
+
+[node name="check" type="CheckButton" parent="vbox/hbox"]
+unique_name_in_owner = true
+margin_left = 934.0
+margin_right = 1010.0
+margin_bottom = 53.0
+
+[node name="value" type="Label" parent="vbox"]
+unique_name_in_owner = true
+margin_top = 57.0
+margin_right = 1010.0
+margin_bottom = 102.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "REPLACEME"
+align = 1
+
+[node name="dialog" type="FileDialog" parent="vbox"]
+unique_name_in_owner = true
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+rect_min_size = Vector2( 400, 400 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+window_title = "Open a Directory"
+resizable = true
+mode = 2
+access = 2
+
+[node name="menu" type="PopupMenu" parent="vbox"]
+unique_name_in_owner = true
+margin_right = 20.0
+margin_bottom = 20.0
+
+[node name="Button" type="Button" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 109.0
+size_flags_horizontal = 9
+flat = true
+
+[connection signal="dir_selected" from="vbox/dialog" to="." method="_on_dialog_dir_selected"]
+[connection signal="index_pressed" from="vbox/menu" to="." method="_on_menu_index_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
