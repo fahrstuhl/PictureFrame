@@ -70,7 +70,7 @@ func load_config():
 		$"%settings".hide()
 	var default_path
 	if OS.get_name() == "Android":
-		default_path = OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
+		default_path = OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
 	else:
 		default_path = OS.get_user_data_dir()
 	set_image_path(CONFIG.get_value("DEFAULT", "image_path", default_path))
