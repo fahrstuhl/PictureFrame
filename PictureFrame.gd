@@ -65,12 +65,15 @@ func load_config():
 	var err = CONFIG.load(CONFIG_PATH)
 	if err != OK:
 		debug_print("Config not found, using default values")
-		is_default_path = true
 		$"%settings".show()
 	else:
-		is_default_path = false
 		$"%settings".hide()
-	set_image_path(CONFIG.get_value("DEFAULT", "image_path", OS.get_user_data_dir()))
+	var default_path
+	if OS.get_name() == "Android":
+		default_path = OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
+	else:
+		default_path = OS.get_user_data_dir()
+	set_image_path(CONFIG.get_value("DEFAULT", "image_path", default_path))
 	set_image_fill(CONFIG.get_value("DEFAULT", "image_fill", 0))
 	set_wait_time(CONFIG.get_value("DEFAULT", "wait_time_index", 3))
 
@@ -193,18 +196,6 @@ static func find_files_with_extensions(path, extensions):
 
 func _on_Timer_timeout():
 	next_picture()
-
-func _on_image_path_button_pressed():
-	var dialog : FileDialog = $"%image_path/grid/FileDialog"
-	if is_default_path and OS.get_name() == "Android":
-		dialog.current_dir = OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
-	debug_print("Current dir: {0}".format([dialog.current_dir]))
-	debug_print("Data dir: {0}".format([OS.get_data_dir()]))
-	debug_print("User data dir: {0}".format([OS.get_user_data_dir()]))
-	for dir in [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DCIM, OS.SYSTEM_DIR_DOCUMENTS, OS.SYSTEM_DIR_PICTURES]:
-		debug_print("System dir {0}: {1}".format([dir, OS.get_system_dir(dir, false)]))
-		debug_print("System dir {0}: {1}".format([dir, OS.get_system_dir(dir, true)]))
-	dialog.show()
 
 func _on_image_path_dir_selected(dir):
 	is_default_path = false

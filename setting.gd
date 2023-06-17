@@ -65,6 +65,7 @@ func setup_file():
 func set_PATH(value):
 	PATH = value
 	$"%value".text = PATH
+	$"%dialog".current_dir = PATH
 
 func _on_button_pressed():
 	match TYPE:
