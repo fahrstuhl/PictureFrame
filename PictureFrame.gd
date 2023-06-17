@@ -139,20 +139,20 @@ func next_picture():
 
 func get_image_type(n: String):
 	n = n.trim_prefix(PATH)
-	var img_name = n.get_file()
-	var top_dir = n.get_base_dir().get_slice("/", 1)
+	var parts = n.split("/")
 	var panorama_checks = ["panorama", "vr360"]
 	var vr180_checks = ["vr180"]
-	if begins_with_list(img_name, panorama_checks) or begins_with_list(top_dir, panorama_checks):
+	if any_begins_with_list(parts, panorama_checks):
 		return ImageType.PANORAMA
-	if begins_with_list(img_name, vr180_checks) or begins_with_list(top_dir, vr180_checks):
+	if any_begins_with_list(parts, vr180_checks):
 		return ImageType.VR180
 	return ImageType.FLAT
 
-static func begins_with_list(string, list):
-	for to_test in list:
-		if string.to_lower().begins_with(to_test):
-			return true
+static func any_begins_with_list(string_list, check_list):
+	for string in string_list:
+		for to_check in check_list:
+			if string.to_lower().begins_with(to_check):
+				return true
 	return false
 
 static func fuzzy_time_format(time: int):
