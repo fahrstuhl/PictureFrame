@@ -96,7 +96,7 @@ func set_image_fill(index):
 func set_wait_time(index):
 	WAIT_TIME_INDEX = index
 	var wait_time = selectable_wait_times[WAIT_TIME_INDEX]
-	print("Setting wait time to {0}".format([fuzzy_time_format(wait_time)]))
+	debug_print("Setting wait time to {0}".format([fuzzy_time_format(wait_time)]))
 	$"%timer".wait_time = wait_time
 	$"%timer".start()
 	$"%wait_time".OPTION = WAIT_TIME_INDEX
@@ -224,4 +224,4 @@ func _on_wait_time_setting_changed(value):
 	set_wait_time(value)
 
 func _on_setting_setting_changed(value):
-	$"%debug".visible = value
+	$"%debug_container".visible = value

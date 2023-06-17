@@ -55,9 +55,14 @@ unique_name_in_owner = true
 wait_time = 5.0
 autostart = true
 
-[node name="debug" type="Label" parent="content"]
+[node name="debug_container" type="ScrollContainer" parent="content"]
 unique_name_in_owner = true
 visible = false
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="debug" type="Label" parent="content/debug_container"]
+unique_name_in_owner = true
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
