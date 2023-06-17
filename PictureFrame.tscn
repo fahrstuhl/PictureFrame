@@ -2,7 +2,7 @@
 
 [ext_resource path="res://PictureFrame.gd" type="Script" id=1]
 [ext_resource path="res://panorama.tscn" type="PackedScene" id=2]
-[ext_resource path="res://private/image_landscape.jpeg" type="Texture" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://setting.tscn" type="PackedScene" id=4]
 
 [node name="PictureFrame" type="Control"]
