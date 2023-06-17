@@ -222,3 +222,6 @@ func _on_image_fill_setting_changed(value):
 
 func _on_wait_time_setting_changed(value):
 	set_wait_time(value)
+
+func _on_setting_setting_changed(value):
+	$"%debug".visible = value

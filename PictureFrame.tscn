@@ -57,6 +57,7 @@ autostart = true
 
 [node name="debug" type="Label" parent="content"]
 unique_name_in_owner = true
+visible = false
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
@@ -106,8 +107,17 @@ margin_bottom = 332.0
 NAME = "Image Fill"
 OPTIONS = [ "Zoom to Fill", "Black Bars" ]
 
+[node name="setting" parent="settings/container" instance=ExtResource( 4 )]
+anchor_right = 0.0
+margin_top = 300.0
+margin_right = 907.0
+margin_bottom = 396.0
+NAME = "Show Debug Output"
+TYPE = 0
+
 [connection signal="gui_input" from="." to="." method="_on_PictureFrame_gui_input"]
 [connection signal="timeout" from="content/timer" to="." method="_on_Timer_timeout"]
 [connection signal="setting_changed" from="settings/container/wait_time" to="." method="_on_wait_time_setting_changed"]
 [connection signal="setting_changed" from="settings/container/image_path" to="." method="_on_image_path_dir_selected"]
 [connection signal="setting_changed" from="settings/container/image_fill" to="." method="_on_image_fill_setting_changed"]
+[connection signal="setting_changed" from="settings/container/setting" to="." method="_on_setting_setting_changed"]
