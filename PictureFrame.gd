@@ -51,7 +51,7 @@ func _unhandled_input(event):
 	handle_menu_toggle(event)
 
 func handle_menu_toggle(event):
-	if event is InputEventMouseButton and event.is_pressed():
+	if event is InputEventMouseButton and event.is_pressed() and event.button_index == BUTTON_LEFT:
 		send_menu_toggle()
 
 func send_menu_toggle():
