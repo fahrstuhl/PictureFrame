@@ -21,6 +21,12 @@ var selectable_wait_times = [
 	6*3600, 12*3600, 24*3600
 ]
 
+class ImageNameSorter:
+	static func sort_by_image_name(a: String, b: String):
+		var a_name = a.get_file()
+		var b_name = b.get_file()
+		return a_name < b_name
+
 func _ready():
 	fill_wait_time_options()
 	get_tree().get_root().connect("size_changed", self, "_on_window_size_changed")
@@ -109,6 +115,7 @@ func set_setting(key: String, value):
 func find_images():
 	debug_print("Finding images")
 	IMAGES = find_files_with_extensions(PATH, ["jpg", "jpeg"])
+	IMAGES.sort_custom(ImageNameSorter, "sort_by_image_name")
 	if len(IMAGES) == 0:
 		debug_print("Couldn't find any images, adding icon.png.")
 		IMAGES.append("res://icon.png")
