@@ -17,6 +17,9 @@ config/icon="res://icon.png"
 
 [display]
 
+window/size/width=1920
+window/size/height=1080
+window/dpi/allow_hidpi=true
 window/handheld/orientation="sensor"
 
 [global]
@@ -43,6 +46,21 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 quality/driver/driver_name="GLES2"
+quality/intended_usage/framebuffer_allocation.mobile=2
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
+quality/directional_shadow/size.mobile=4096
+quality/shadow_atlas/size.mobile=4096
+quality/shadow_atlas/cubemap_size=1024
+quality/shadows/filter_mode.mobile=1
+quality/reflections/texture_array_reflections.mobile=true
+quality/reflections/high_quality_ggx.mobile=true
+quality/reflections/irradiance_max_size=256
+quality/shading/force_vertex_shading.mobile=false
+quality/shading/force_lambert_over_burley.mobile=false
+quality/shading/force_blinn_over_ggx.mobile=false
+gles2/compatibility/enable_high_float.Android=true
+quality/lightmapping/use_bicubic_sampling.mobile=true
+quality/reflections/atlas_size=4096
+quality/depth/hdr.mobile=true
 environment/default_environment="res://default_env.tres"

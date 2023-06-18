@@ -121,8 +121,31 @@ func find_images():
 		IMAGES.append("res://icon.png")
 	image = Image.new()
 	c_texture = ImageTexture.new()
+	c_texture.storage = ImageTexture.STORAGE_RAW
 	image.load(IMAGES[0])
+	resize_image()
 	next_picture()
+
+func resize_image():
+	var w : float = image.get_width()
+	var h : float = image.get_height()
+	var max_side = 4096
+	if w <= max_side and h <= max_side:
+		return
+
+	var aspect = w/h
+	var new_w
+	var new_h
+	if aspect > 1:
+		new_w = max_side
+		new_h = max_side/aspect
+	elif aspect < 1:
+		new_w = max_side*aspect
+		new_h = max_side
+	else:
+		new_w = max_side
+		new_h = max_side
+	image.resize(new_w, new_h, Image.INTERPOLATE_LANCZOS)
 
 func next_picture():
 	c_texture.create_from_image(image)
@@ -132,8 +155,10 @@ func next_picture():
 	match image_type:
 		ImageType.PANORAMA:
 			$"%panorama/panorama/WorldEnvironment".environment.background_sky.panorama = c_texture
+#			$"%panorama/panorama/Sky".mesh.material.albedo_texture = c_texture
 			$"%image".hide()
 			$"%panorama/panorama/Camera".rotation_degrees.y = 0
+#			$"%panorama/panorama/Sky".rotation_degrees.y = 180
 			$"%panorama".show()
 		ImageType.FLAT:
 			$"%image/image".texture = c_texture
@@ -141,11 +166,14 @@ func next_picture():
 			$"%image".show()
 		ImageType.VR180:
 			$"%panorama/panorama/WorldEnvironment".environment.background_sky.panorama = c_texture
+#			$"%panorama/panorama/Sky".mesh.material.albedo_texture = c_texture
 			$"%image".hide()
 			$"%panorama".show()
 			$"%panorama/panorama/Camera".rotation_degrees.y = 90
+#			$"%panorama/panorama/Sky".rotation_degrees.y = 90
 	current = (current + 1)%len(IMAGES)
 	image.load(IMAGES[current])
+	resize_image()
 
 func get_image_type(n: String):
 	n = n.trim_prefix(PATH)
